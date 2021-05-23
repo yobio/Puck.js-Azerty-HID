@@ -168,7 +168,7 @@ exports.KEY = {
   PAD_PERIOD  : 99
 };
 
-exports.LETTER_KEYS = [
+exports.LETTER_KEYS = {
 	"A"           : 20,
 	"B"           : 5 ,
 	"C"           : 6 ,
@@ -195,7 +195,7 @@ exports.LETTER_KEYS = [
 	"X"           : 27,
 	"Y"           : 28,
 	"Z"           : 26
-];
+};
 
 exports.tap = function(keyCode, modifiers, callback) {
 	NRF.sendHIDReport([modifiers,0,keyCode,0,0,0,0,0], function() {
