@@ -225,4 +225,3 @@ sendHID = exports.sendHID = function(i,strArray) {
 			sendHID(charNb);
 		}
 	}
-}
