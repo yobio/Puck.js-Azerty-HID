@@ -168,7 +168,7 @@ exports.KEY = {
   PAD_PERIOD  : 99
 };
 
-exports.LETTER_KEYS = {
+LETTER_KEYS = exports.LETTER_KEYS = {
 	"A"           : 20,
 	"B"           : 5 ,
 	"C"           : 6 ,
