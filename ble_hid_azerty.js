@@ -177,8 +177,8 @@ exports.tap = function(keyCode, modifiers, callback) {
 };
 
 exports.type = function(string, callback) {
-	for (var letterNb = 1; letterNb <= string.length; letterNb++) {
-		NRF.sendHIDReport([modifiers,0,kb.KEY.string.charAt(letterNb),0,0,0,0,0], function() {
+	for (var letterNb = 0; letterNb < string.length; letterNb++) {
+		NRF.sendHIDReport([modifiers,0,KEY[string.charAt(letterNb)],0,0,0,0,0], function() {
 			NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
 				if (callback) callback();
 			});
