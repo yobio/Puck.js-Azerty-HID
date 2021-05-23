@@ -69,32 +69,32 @@ exports.MODIFY = {
   RIGHT_GUI   : 0x80
  };
 exports.KEY = {
-  A           : 20 ,
-  B           : 5 ,
-  C           : 6 ,
-  D           : 7 ,
-  E           : 8 ,
-  F           : 9 ,
-  G           : 10,
-  H           : 11,
-  I           : 12,
-  J           : 13,
-  K           : 14,
-  L           : 15,
-  M           : 51,
-  N           : 17,
-  O           : 18,
-  P           : 19,
-  Q           : 4,
-  R           : 21,
-  S           : 22,
-  T           : 23,
-  U           : 24,
-  V           : 25,
-  W           : 29,
-  X           : 27,
-  Y           : 28,
-  Z           : 26,
+  "A"           : 20,
+  "B"           : 5 ,
+  "C"           : 6 ,
+  "D"           : 7 ,
+  "E"           : 8 ,
+  "F"           : 9 ,
+  "G"           : 10,
+  "H"           : 11,
+  "I"           : 12,
+  "J"           : 13,
+  "K"           : 14,
+  "L"           : 15,
+  "M"           : 51,
+  "N"           : 17,
+  "O"           : 18,
+  "P"           : 19,
+  "Q"           : 4 ,
+  "R"           : 21,
+  "S"           : 22,
+  "T"           : 23,
+  "U"           : 24,
+  "V"           : 25,
+  "W"           : 29,
+  "X"           : 27,
+  "Y"           : 28,
+  "Z"           : 26,
   1           : 30,
   2           : 31,
   3           : 32,
@@ -169,9 +169,19 @@ exports.KEY = {
 };
 
 exports.tap = function(keyCode, modifiers, callback) {
-  NRF.sendHIDReport([modifiers,0,keyCode,0,0,0,0,0], function() {
-    NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
-      if (callback) callback();
-    });    
-  });
+	NRF.sendHIDReport([modifiers,0,keyCode,0,0,0,0,0], function() {
+		NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
+			if (callback) callback();
+		});
+	});
 };
+
+exports.type = function(string, callback) {
+	for (var letterNb = 1; letterNb <= string.length; letterNb++) {
+		NRF.sendHIDReport([modifiers,0,kb.KEY.string.charAt(letterNb),0,0,0,0,0], function() {
+			NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
+				if (callback) callback();
+			});
+		});
+	}
+}
