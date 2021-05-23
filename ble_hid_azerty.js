@@ -217,7 +217,7 @@ exports.type = function(string) {
 	}*/
 }
 
-function sendHID(i,strArray) {
+sendHID = exports.sendHID = function(i,strArray) {
 	var charNb = i;
 	NRF.sendHIDReport([0,0,KEY[strArray[charNb]],0,0,0,0,0], function() {
 		if (charNb < strArray.length - 1) {
