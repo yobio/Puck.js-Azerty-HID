@@ -224,4 +224,5 @@ sendHID = exports.sendHID = function(i,strArray) {
 			charNb += 1;
 			sendHID(charNb);
 		}
-	}
+	});
+}
