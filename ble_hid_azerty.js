@@ -168,6 +168,35 @@ exports.KEY = {
   PAD_PERIOD  : 99
 };
 
+exports.LETTER_KEYS = [
+	"A"           : 20,
+	"B"           : 5 ,
+	"C"           : 6 ,
+	"D"           : 7 ,
+	"E"           : 8 ,
+	"F"           : 9 ,
+	"G"           : 10,
+	"H"           : 11,
+	"I"           : 12,
+	"J"           : 13,
+	"K"           : 14,
+	"L"           : 15,
+	"M"           : 51,
+	"N"           : 17,
+	"O"           : 18,
+	"P"           : 19,
+	"Q"           : 4 ,
+	"R"           : 21,
+	"S"           : 22,
+	"T"           : 23,
+	"U"           : 24,
+	"V"           : 25,
+	"W"           : 29,
+	"X"           : 27,
+	"Y"           : 28,
+	"Z"           : 26
+];
+
 exports.tap = function(keyCode, modifiers, callback) {
 	NRF.sendHIDReport([modifiers,0,keyCode,0,0,0,0,0], function() {
 		NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
@@ -178,7 +207,7 @@ exports.tap = function(keyCode, modifiers, callback) {
 
 exports.type = function(string, callback) {
 	for (var letterNb = 0; letterNb < string.length; letterNb++) {
-		NRF.sendHIDReport([0,0,KEY[string.charAt(letterNb)],0,0,0,0,0], function() {
+		NRF.sendHIDReport([0,0,LETTER_KEYS[string.charAt(letterNb)],0,0,0,0,0], function() {
 			NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
 				if (callback) callback();
 			});
