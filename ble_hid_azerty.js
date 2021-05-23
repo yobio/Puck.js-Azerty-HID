@@ -208,9 +208,21 @@ exports.tap = function(keyCode, modifiers, callback) {
 
 exports.type = function(string) {
 	var strArray = string.split('');
-	for (var char in strArray) {
+	var charNb = 0;
+	sendHID(charNb,strArray);
+	/*for (var char in strArray) {
 		NRF.sendHIDReport([0,0,KEY.char,0,0,0,0,0], function() {
 			NRF.sendHIDReport([0,0,0,0,0,0,0,0]);
 		});
+	}*/
+}
+
+function sendHID(i,strArray) {
+	var charNb = i;
+	NRF.sendHIDReport([0,0,KEY[strArray[charNb]],0,0,0,0,0], function() {
+		if (charNb < strArray.length - 1) {
+			charNb += 1;
+			sendHID(charNb);
+		}
 	}
 }
