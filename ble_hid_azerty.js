@@ -206,15 +206,12 @@ exports.tap = function(keyCode, modifiers, callback) {
 	});
 };
 
-exports.type = function(string, callback) {
-	for (var letterNb = 1; letterNb <= string.length; letterNb += 6) {
-		//var textToSend = {  };
-		console.log(str(letterNb) + ': ' + str(string.charAt(letterNb)));
+exports.type = function(string) {
+	var strArray = string.split('');
+	for (var char in strArray) {
 		
-		NRF.sendHIDReport([0,0,KEY[string.charAt(letterNb)],0,0,0,0,0], function() {
-			NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
-				if (callback) callback();
-			});
+		NRF.sendHIDReport([0,0,KEY[char],0,0,0,0,0], function() {
+			NRF.sendHIDReport([0,0,0,0,0,0,0,0]);
 		});
 	}
 }
