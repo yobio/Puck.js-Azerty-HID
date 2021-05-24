@@ -168,11 +168,23 @@ var tap = exports.tap = function(keyCode, modifiers, callback) {
 	});
 };
 
-var type = exports.type = function(string, callback) {
+var type = exports.type = function(string) {
 	var strArray = string.split('');
-	for (var char in strArray) {
-		tap(KEY[char.toUpperCase], 0, function() {
-			if (callback) callback();
-		});
-	}
+	var charNb = 0;
+	
+	sendHID(charNb, strArray);
+}
+
+var sendHID = function(i, strArray) {
+	var charNb = i;
+	var strLength = strArray.length - 1;
+	
+	tap(KEY[strArray[charNb].toUpperCase], 0, function() {
+		if (charNb < strLength) {
+			charNb += 1;
+			sendHID(charNb, strArray);
+		} else {
+			console.log('Stop');
+		}
+	});
 }
