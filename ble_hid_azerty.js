@@ -219,12 +219,11 @@ exports.type = function(string) {
 
 sendHID = exports.sendHID = function(i,strArray) {
 	var charNb = i;
+	console.log(strArray.length);
 	NRF.sendHIDReport([0,0,KEY[strArray[charNb]],0,0,0,0,0], function() {
 		if (charNb < strArray.length - 1) {
 			charNb += 1;
-			if (charNb > strArray.length) {
-				break;
-			}
+			console.log(charNb);
 			sendHID(charNb,strArray);
 		}
 	});
