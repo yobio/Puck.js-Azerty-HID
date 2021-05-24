@@ -168,7 +168,7 @@ var tap = exports.tap = function(keyCode, modifiers, callback) {
 	});
 };
 
-var type = exports.type(string, callback) {
+var type = exports.type = function(string, callback) {
 	var strArray = string.split('');
 	for (var char in strArray) {
 		tap(KEY[char.toUpperCase], 0, function() {
