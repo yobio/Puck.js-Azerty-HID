@@ -225,9 +225,10 @@ sendHID = exports.sendHID = function(i,strArray) {
 			sendHID(charNb,strArray);
 		}
 		if (charNb == strArray.length - 1) {
-			char += 1
+			char += 1;
 		} else if (charNb >= strArray.length) {
 			NRF.sendHIDReport([0,0,0,0,0,0,0,0]);
+			break;
 		}
 	});
 }
