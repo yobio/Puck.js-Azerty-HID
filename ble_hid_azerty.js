@@ -219,14 +219,15 @@ exports.type = function(string) {
 
 sendHID = exports.sendHID = function(i,strArray, stop) {
 	var charNb = i;
-	var modifier;
-	if (strArray[charNb] == strArray[charNb].toUpperCase()) {
-		modifier = MODIFY.SHIFT;
-	} else {
-		modifier = 0;
-	}
 	NRF.sendHIDReport([modifier,0,KEY[strArray[charNb].toUpperCase()],0,0,0,0,0], function() {
-		if (stop != true) {
+		if (!stop) {
+			var modifier;
+			if (strArray[charNb] == strArray[charNb].toUpperCase()) {
+				modifier = MODIFY.SHIFT;
+			} else {
+				modifier = 0;
+			}
+			
 			if (charNb < strArray.length) {
 				charNb += 1;
 				sendHID(charNb,strArray, false);
