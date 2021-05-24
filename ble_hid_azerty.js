@@ -230,6 +230,7 @@ sendHID = exports.sendHID = function(i,strArray) {
 		} else if (charNb >= strArray.length) {
 			console.log('stop2');
 			NRF.sendHIDReport([0,0,0,0,0,0,0,0]);
+			break;
 		}
 	});
 }
