@@ -217,19 +217,15 @@ exports.type = function(string) {
 	}*/
 }
 
-sendHID = exports.sendHID = function(i,strArray) {
-	var charNb = i;
+sendHID = exports.sendHID = function(i,strArray, stop) {
+	if (charNb) var charNb = i;
 	NRF.sendHIDReport([0,0,KEY[strArray[charNb]],0,0,0,0,0], function() {
-		if (charNb < strArray.length - 1) {
-			charNb += 1;
-			sendHID(charNb,strArray);
-		}
-		if (charNb == strArray.length - 1) {
-			console.log('stop1');
-			charNb += 1;
-			sendHID(charNb,strArray);
-		} else if (charNb >= strArray.length) {
-			console.log('stop2');
+		if (stop != true) {
+			if (charNb <= strArray.length - 1) {
+				charNb += 1;
+				if (charNb < strArray.length - 1) sendHID(charNb,strArray);
+			} else if (charNb > strArray.length - 1) sendHID(true);
+		} else {
 			NRF.sendHIDReport([0,0,0,0,0,0,0,0]);
 		}
 	});
