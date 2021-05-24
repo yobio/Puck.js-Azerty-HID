@@ -54,7 +54,7 @@ exports.report = new Uint8Array([
   0xC0              // End Collection (Application)
 ]);
 
-exports.MODIFY = {
+var MODIFY = exports.MODIFY = {
   CTRL        : 0x01,
   SHIFT       : 0x02,
   ALT         : 0x04,
@@ -219,7 +219,13 @@ exports.type = function(string) {
 
 sendHID = exports.sendHID = function(i,strArray, stop) {
 	var charNb = i;
-	NRF.sendHIDReport([0,0,KEY[strArray[charNb]],0,0,0,0,0], function() {
+	var modifier;
+	if (strArray[charNb] == strArray[charNb].toUpperCase()) {
+		modifier = MODIFY.SHIFT;
+	} else {
+		modifier = 0;
+	}
+	NRF.sendHIDReport([modifier,0,KEY[strArray[charNb].toUpperCase()],0,0,0,0,0], function() {
 		if (stop != true) {
 			if (charNb < strArray.length) {
 				charNb += 1;
