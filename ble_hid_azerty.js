@@ -225,7 +225,7 @@ sendHID = exports.sendHID = function(i,strArray, stop) {
 				charNb += 1;
 				if (charNb < strArray.length) sendHID(charNb,strArray, false);
 			}
-			if (charNb >= strArray.length - 1) {
+			if (charNb > strArray.length) {
 				console.log('stop');
 				sendHID(charNb,strArray,true);
 			}
