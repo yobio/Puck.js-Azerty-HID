@@ -236,7 +236,7 @@ let sendHID = exports.sendHID = function(charNb, string, callback) {
       modifier = KEY_MODIFIERS[string[charNb]];
     }
     NRF.sendHIDReport([modifier,0,KEY[string[charNb].toUpperCase()],0,0,0,0,0], function() {
-        if (charNb < string.length) {
+        if (charNb < string.length - 1) {
             charNb += 1;
             sendHID(charNb,string, function() {
               if (callback) callback();
