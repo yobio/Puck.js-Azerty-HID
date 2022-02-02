@@ -112,18 +112,18 @@ var KEY = exports.KEY = {
   BACKSPACE   : 42,
   "\t"        : 43,
   " "         : 44,
-  "-"         : 45,
+  "-"         : 35,
   "="         : 46,
-  "["         : 47,
-  "]"         : 48,
-  "\\"        : 49,
+  "["         : 34,
+  "]"         : 45,
+  "\\"        : 37,
   NUMBER      : 50,
-  ";"         : 51,
-  "'"         : 52,
-  "~"         : 53,
+  ";"         : 54,
+  "'"         : 33,
+  "~"         : 31,
   ","         : 16,
-  "."         : 55,
-  "/"         : 56,
+  "."         : 54,
+  "/"         : 55,
   CAPS_LOCK   : 57,
   F1          : 58,
   F2          : 59,
@@ -169,35 +169,6 @@ var KEY = exports.KEY = {
   PAD_PERIOD  : 99
 };
 
-/*LETTER_KEYS = exports.LETTER_KEYS = {
-	"A"           : 20,
-	"B"           : 5 ,
-	"C"           : 6 ,
-	"D"           : 7 ,
-	"E"           : 8 ,
-	"F"           : 9 ,
-	"G"           : 10,
-	"H"           : 11,
-	"I"           : 12,
-	"J"           : 13,
-	"K"           : 14,
-	"L"           : 15,
-	"M"           : 51,
-	"N"           : 17,
-	"O"           : 18,
-	"P"           : 19,
-	"Q"           : 4 ,
-	"R"           : 21,
-	"S"           : 22,
-	"T"           : 23,
-	"U"           : 24,
-	"V"           : 25,
-	"W"           : 29,
-	"X"           : 27,
-	"Y"           : 28,
-	"Z"           : 26
-};*/
-
 exports.tap = function(keyCode, modifiers, callback) {
 	NRF.sendHIDReport([modifiers,0,keyCode,0,0,0,0,0], function() {
 		NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
@@ -215,7 +186,7 @@ exports.type = function(string) {
 			NRF.sendHIDReport([0,0,0,0,0,0,0,0]);
 		});
 	}*/
-}
+};
 
 sendHID = exports.sendHID = function(i,strArray, stop) {
 	var charNb = i;
@@ -232,4 +203,4 @@ sendHID = exports.sendHID = function(i,strArray, stop) {
 			NRF.sendHIDReport([0,0,0,0,0,0,0,0]);
 		}
 	});
-}
+};
