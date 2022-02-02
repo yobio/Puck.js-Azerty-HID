@@ -177,8 +177,10 @@ exports.tap = function(keyCode, modifiers, callback) {
 	});
 };
 
-exports.type = function(string) {
-	sendHID(0,string);
+exports.type = function(string, callback) {
+	sendHID(0, string, function() {
+      if (callback) callback();
+    });
 };
 
 sendHID = exports.sendHID = function(charNb, string, callback) {
