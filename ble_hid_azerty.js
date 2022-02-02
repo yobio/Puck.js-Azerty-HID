@@ -187,7 +187,9 @@ sendHID = exports.sendHID = function(charNb, string, callback) {
             charNb += 1;
             sendHID(charNb,string);
 		} else {
-			NRF.sendHIDReport([0,0,0,0,0,0,0,0], callback);
+			NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
+              if (callback) callback();
+            });
 		}
 	});
 };
