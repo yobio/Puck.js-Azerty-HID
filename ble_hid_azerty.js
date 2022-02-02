@@ -54,10 +54,11 @@ exports.report = new Uint8Array([
   0xC0              // End Collection (Application)
 ]);
 
-exports.MODIFY = {
+var MODIFY = exports.MODIFY = {
   CTRL        : 0x01,
   SHIFT       : 0x02,
   ALT         : 0x04,
+  ALT_GR      : 0xe1,
   GUI         : 0x08,
   LEFT_CTRL   : 0x01,
   LEFT_SHIFT  : 0x02,
@@ -169,6 +170,52 @@ var KEY = exports.KEY = {
   PAD_PERIOD  : 99
 };
 
+var KEY_MODIFIERS = exports.KEY_MODIFIERS = {
+  "A"         : MODIFY.SHIFT,
+  "B"         : MODIFY.SHIFT,
+  "C"         : MODIFY.SHIFT,
+  "D"         : MODIFY.SHIFT,
+  "E"         : MODIFY.SHIFT,
+  "F"         : MODIFY.SHIFT,
+  "G"         : MODIFY.SHIFT,
+  "H"         : MODIFY.SHIFT,
+  "I"         : MODIFY.SHIFT,
+  "J"         : MODIFY.SHIFT,
+  "K"         : MODIFY.SHIFT,
+  "L"         : MODIFY.SHIFT,
+  "M"         : MODIFY.SHIFT,
+  "N"         : MODIFY.SHIFT,
+  "O"         : MODIFY.SHIFT,
+  "P"         : MODIFY.SHIFT,
+  "Q"         : MODIFY.SHIFT,
+  "R"         : MODIFY.SHIFT,
+  "S"         : MODIFY.SHIFT,
+  "T"         : MODIFY.SHIFT,
+  "U"         : MODIFY.SHIFT,
+  "V"         : MODIFY.SHIFT,
+  "W"         : MODIFY.SHIFT,
+  "X"         : MODIFY.SHIFT,
+  "Y"         : MODIFY.SHIFT,
+  "Z"         : MODIFY.SHIFT,
+  1           : MODIFY.SHIFT,
+  2           : MODIFY.SHIFT,
+  3           : MODIFY.SHIFT,
+  4           : MODIFY.SHIFT,
+  5           : MODIFY.SHIFT,
+  6           : MODIFY.SHIFT,
+  7           : MODIFY.SHIFT,
+  8           : MODIFY.SHIFT,
+  9           : MODIFY.SHIFT,
+  0           : MODIFY.SHIFT,
+  "["         : MODIFY.ALT_GR,
+  "]"         : MODIFY.ALT_GR,
+  "\\"        : MODIFY.ALT_GR,
+  "~"         : MODIFY.ALT_GR,
+  "."         : MODIFY.SHIFT,
+  "/"         : MODIFY.SHIFT,
+};
+
+
 exports.tap = function(keyCode, modifiers, callback) {
 	NRF.sendHIDReport([modifiers,0,keyCode,0,0,0,0,0], function() {
 		NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
@@ -183,13 +230,21 @@ exports.type = function(string, callback) {
     });
 };
 
-sendHID = exports.sendHID = function(charNb, string, callback) {
-	NRF.sendHIDReport([0,0,KEY[string[charNb]],0,0,0,0,0], function() {
+let sendHID = exports.sendHID = function(charNb, string, callback) {
+	var modifier = 0;
+    if (string[charNb] in KEY_MODIFIERS) {
+      modifier = KEY_MODIFIERS[string[charNb]];
+    }
+    NRF.sendHIDReport([0,0,KEY[string[charNb].toUpperCase()],modifier,0,0,0,0], function() {
         if (charNb < string.length) {
             charNb += 1;
-            sendHID(charNb,string, callback);
+            sendHID(charNb,string, function() {
+              if (callback) callback();
+            });
 		} else {
-			NRF.sendHIDReport([0,0,0,0,0,0,0,0], callback);
+			NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
+              if (callback) callback();
+            });
 		}
 	});
 };
