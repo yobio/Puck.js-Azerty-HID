@@ -178,29 +178,16 @@ exports.tap = function(keyCode, modifiers, callback) {
 };
 
 exports.type = function(string) {
-	var strArray = string.split('');
-	var charNb = 0;
-	sendHID(charNb,strArray, false);
-	/*for (var char in strArray) {
-		NRF.sendHIDReport([0,0,KEY.char,0,0,0,0,0], function() {
-			NRF.sendHIDReport([0,0,0,0,0,0,0,0]);
-		});
-	}*/
+	sendHID(0,string);
 };
 
-sendHID = exports.sendHID = function(i,strArray, stop) {
-	var charNb = i;
-	NRF.sendHIDReport([0,0,KEY[strArray[charNb]],0,0,0,0,0], function() {
-		if (stop != true) {
-			if (charNb < strArray.length) {
-				charNb += 1;
-				sendHID(charNb,strArray, false);
-			} else {
-				console.log('stop');
-				sendHID(charNb,strArray,true);
-			}
+sendHID = exports.sendHID = function(charNb, string, callback) {
+	NRF.sendHIDReport([0,0,KEY[string[charNb]],0,0,0,0,0], function() {
+        if (charNb < string.length) {
+            charNb += 1;
+            sendHID(charNb,string);
 		} else {
-			NRF.sendHIDReport([0,0,0,0,0,0,0,0]);
+			NRF.sendHIDReport([0,0,0,0,0,0,0,0], callback);
 		}
 	});
 };
