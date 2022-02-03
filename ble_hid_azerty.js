@@ -239,17 +239,11 @@ let sendHID = exports.sendHID = function(charNb, string, callback) {
         if (charNb < string.length - 1) {
             charNb += 1;
             setTimeout(function() {
-              if (string[charNb+1] == string[charNb]) {
-                  NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
-                    sendHID(charNb,string, function() {
-                      if (callback) callback();
-                    });
-                  });
-              } else {
+              NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
                 sendHID(charNb,string, function() {
                   if (callback) callback();
                 });
-              }
+              });
             }, 0);
 		} else {
 			NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
