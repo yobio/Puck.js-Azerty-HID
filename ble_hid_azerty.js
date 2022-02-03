@@ -217,38 +217,43 @@ var KEY_MODIFIERS = exports.KEY_MODIFIERS = {
 
 
 exports.tap = function(keyCode, modifiers, callback) {
-	NRF.sendHIDReport([modifiers,0,keyCode,0,0,0,0,0], function() {
-		NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
-			if (callback) callback();
-		});
-	});
+  NRF.sendHIDReport([modifiers,0,keyCode,0,0,0,0,0], function() {
+    NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
+      if (callback) callback();
+    });
+  });
 };
 
 exports.type = function(string, callback) {
-	sendHID(0, string, function() {
-      if (callback) callback();
-    });
-};
+  var charNb = 0;
 
-let sendHID = exports.sendHID = function(charNb, string, callback) {
-	var modifier = 0;
+  function sendHID() {
+    var modifier = 0;
     if (string[charNb] in KEY_MODIFIERS) {
       modifier = KEY_MODIFIERS[string[charNb]];
     }
-    NRF.sendHIDReport([modifier,0,KEY[string[charNb].toUpperCase()],0,0,0,0,0], function() {
-	NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
-		if (charNb < string.length - 1) {
-		    charNb += 1;
-		    setTimeout(function() {
-			sendHID(charNb,string, function() {
-			  if (callback) callback();
-			});
-		    }, 0);
-		} else {
-		    NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
-		      if (callback) callback();
-		    });
-		}
-	});
-    });
+    if (charNb < string.length) {
+      NRF.sendHIDReport([modifier,0,KEY[string[charNb].toUpperCase()],0,0,0,0,0], function() {
+        if (string[charNb+1] == string[charNb]) {
+          NRF.sendHIDReport([0,0,0,0,0,0,0], function() {
+            charNb++;
+            setTimeout(function() {
+              sendHID();
+            }, 0);
+          });
+        } else {
+          charNb++;
+          setTimeout(function() {
+            sendHID();
+          }, 0);
+        }
+      });
+    } else {
+      NRF.sendHIDReport([0,0,0,0,0,0,0], function() {
+        if (callback) callback();
+      });
+    }
+  }
+
+  sendHID();
 };
