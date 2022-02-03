@@ -236,21 +236,19 @@ let sendHID = exports.sendHID = function(charNb, string, callback) {
       modifier = KEY_MODIFIERS[string[charNb]];
     }
     NRF.sendHIDReport([modifier,0,KEY[string[charNb].toUpperCase()],0,0,0,0,0], function() {
-	setTimeout(function() {
-		NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
-			if (charNb < string.length - 1) {
-			    charNb += 1;
-			    setTimeout(function() {
-				sendHID(charNb,string, function() {
-				  if (callback) callback();
-				});
-			    }, 0);
-			} else {
-			    NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
-			      if (callback) callback();
-			    });
-			}
-		});
-	}, 0);
+	NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
+		if (charNb < string.length - 1) {
+		    charNb += 1;
+		    setTimeout(function() {
+			sendHID(charNb,string, function() {
+			  if (callback) callback();
+			});
+		    }, 0);
+		} else {
+		    NRF.sendHIDReport([0,0,0,0,0,0,0,0], function() {
+		      if (callback) callback();
+		    });
+		}
+	});
     });
 };
